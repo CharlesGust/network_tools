@@ -1,6 +1,10 @@
 import socket
 
 
+def http_ok():
+    return "HTTP/1.1 200 OK \r\n"
+
+
 def echo():
     buffsize = 128
     address = ('127.0.0.1', 50000)
