@@ -2,17 +2,27 @@ import socket
 
 
 def echo():
+    buffsize = 128
+    address = ('127.0.0.1', 50000)
+
     try:
         server_socket = socket.socket(
             socket.AF_INET,
             socket.SOCK_STREAM,
             socket.IPPROTO_IP)
-        server_socket.bind(('127.0.0.1', 50000))
+        server_socket.bind(address)
+        server_socket.listen(1)
+
         while True:
-            server_socket.listen(1)
+            conn, addr = server_socket.accept()
             try:
-                conn, addr = server_socket.accept()
-                print conn.recv(256)
+                while True:
+                    data = conn.recv(buffsize)
+                    if data:
+                        conn.sendall(data)
+                    else:
+                        # conn.shutdown(socket.SHUT_RDWR)
+                        break
             finally:
                 conn.close()
     finally:
