@@ -5,6 +5,10 @@ def http_ok():
     return "HTTP/1.1 200 OK \r\n"
 
 
+def http_error(status_code, reason_phrase):
+    return "HTTP/1.1 %03d %s \r\n" % (status_code, reason_phrase)
+
+
 def echo():
     buffsize = 128
     address = ('127.0.0.1', 50000)
