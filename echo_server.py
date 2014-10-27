@@ -21,9 +21,9 @@ def echo():
                     if data:
                         conn.sendall(data)
                     else:
-                        # conn.shutdown(socket.SHUT_RDWR)
                         break
             finally:
+                conn.shutdown(socket.SHUT_RDWR)
                 conn.close()
     finally:
         server_socket.close()
