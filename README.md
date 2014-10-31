@@ -11,3 +11,6 @@ Additional Help and Clairifications were received at:
 
   Particularly that the msg needed to be sent back to the client, and a sketch of how to implement the server with threads, which
   Dan Hable also covered in class.
+
+For the Socket HTTP Server (also in network_tools), I also have to thank
+the people above.git

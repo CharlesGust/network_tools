@@ -1,5 +1,4 @@
 import socket
-import urllib2
 
 
 def http_ok():
@@ -10,7 +9,17 @@ def http_error(status_code, reason_phrase):
     return "HTTP/1.1 %03d %s \r\n" % (status_code, reason_phrase)
 
 
-def echo():
+def check_request(req):
+    check_meth = req.partition(' ')
+    if check_meth[0] != "GET":
+        return False, http_error(405, "Method Not Allowed")
+    check_prot = check_meth[2].partition(' ')
+    if check_prot[2] != "HTTP/1.1":
+        return False, http_error(501, "Not Implemented")
+    return True, check_prot[0]
+
+
+def listen():
     buffsize = 128
     address = ('127.0.0.1', 50000)
 
@@ -28,7 +37,16 @@ def echo():
                 while True:
                     data = conn.recv(buffsize)
                     if data:
-                        conn.sendall(data)
+                        succeeded, msg = check_request(data)
+                        if not succeeded:
+                            conn.sendall(msg)
+                            break
+                        else:
+                            conn.sendall(http_ok())
+
+                        # here is where server would process uri
+                        print msg
+
                     else:
                         break
             finally:
@@ -38,4 +56,4 @@ def echo():
         server_socket.close()
 
 if __name__ == "__main__":
-    echo()
+    listen()
